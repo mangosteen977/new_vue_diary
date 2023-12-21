@@ -109,13 +109,18 @@ export default {
           // 로그인 성공
           alert(result.username + "님 안녕하세요.");
           // 세션스토리지에 로그인 정보 저장
-          sessionStorage.setItem("diary_userid", result.username);
+          let userData = {
+            name: result.username,
+            id: result.user_id,
+          };
+          let jsonUserData = JSON.stringify(userData);
+          sessionStorage.setItem("diary_user", jsonUserData);
           // 로그인 상태로 설정
           this.isLoggedIn = true;
           // 로그인 성공 시 다음 페이지로 이동
-          // this.$router.push({
-          //   name: "",
-          // });
+          this.$router.push({
+            name: "add-new-diary-view",
+          });
           // location.href = "/";
         } else {
           // passwordMismatch, userInformationNotFound 실패
