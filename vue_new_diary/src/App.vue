@@ -18,25 +18,26 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <router-link class="nav-link" aria-current="page" to="/calendar"
                   >Home</router-link
                 >
+              </li> -->
+              <li class="nav-item">
+                <router-link class="nav-link" to="/diaryListView"
+                  >List</router-link
+                >
               </li>
               <li class="nav-item">
-                <router-link class="nav-link" to="/list">List</router-link>
+                <router-link class="nav-link" to="/addnewDiary"
+                  >Write</router-link
+                >
               </li>
-              <li class="nav-item">
-                <router-link class="nav-link" to="/list2">List2</router-link>
-              </li>
-              <li class="nav-item">
-                <router-link class="nav-link" to="/edit">Write</router-link>
-              </li>
-              <li class="nav-item" v-if="isLoggedIn">
+              <!-- <li class="nav-item" v-if="isLoggedIn">
                 <router-link class="nav-link" to="/profile"
                   >Profile</router-link
                 >
-              </li>
+              </li> -->
               <li class="nav-item" v-if="isLoggedIn" @click="logOut()">
                 <div class="nav-link" role="button">로그아웃</div>
               </li>
@@ -68,7 +69,7 @@ export default {
     this.checkSessionStorage();
   },
   methods: {
-    ...mapActions(useDiaryStore, ["checkSessionStorage"]), //store의 actions 사용 (로그인/회원가입)
+    ...mapActions(useDiaryStore, ["checkSessionStorage", "clearAll"]), //store의 actions 사용 (로그인/회원가입)
     goToLoginView() {
       this.$router.push({
         name: "signIn-view", //로그인 페이지로
@@ -77,9 +78,9 @@ export default {
     logOut() {
       // 세션스토리지 저장 값 삭제
       console.log(this.isLoggedIn);
-      sessionStorage.removeItem("diary_userid");
+      sessionStorage.removeItem("diary_user");
       // 로그아웃 상태로 설정
-      this.isLoggedIn = false;
+      this.clearAll();
       // 로그인 페이지로 새로고침
       location.href = "/";
     },

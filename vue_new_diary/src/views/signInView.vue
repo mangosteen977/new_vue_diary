@@ -117,9 +117,9 @@ export default {
           sessionStorage.setItem("diary_user", jsonUserData);
           // 로그인 상태로 설정
           this.isLoggedIn = true;
-          // 로그인 성공 시 다음 페이지로 이동
+          // 로그인 성공 시 리스트 페이지로 이동
           this.$router.push({
-            name: "add-new-diary-view",
+            name: "diary-list-view",
           });
           // location.href = "/";
         } else {

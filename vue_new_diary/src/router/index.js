@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router"
 import signInView from '../views/signInView.vue'
 import addNewDiaryView from '../views/addNewDiaryView.vue'
+import diaryListView from '../views/diaryListView.vue'
 const routes = [
     {
         path : '/',
@@ -11,6 +12,11 @@ const routes = [
         path : '/addnewDiary',
         name : 'add-new-diary-view',
         component : addNewDiaryView
+    },
+    {
+        path : '/diaryListView',
+        name : 'diary-list-view',
+        component : diaryListView
     },
 ]
 const router = createRouter({

@@ -3,9 +3,10 @@ import axios from "axios";
 export const useDiaryStore = defineStore('diaryData', {
     state: () => ({
       username: "", //로그인 아이디
-      userId : null,//로그인 된 아이디 ID
+      userId: null,//로그인 된 아이디 ID
       isLoggedIn: false, //로그인 유무
       select_data: {}, //다이어리 작성 페이지
+      content_data : [] //다이어리 콘텐츠 리스트
     }),
     actions: {
       //세선스토리지 로그인 정보 저장 유무 확인
@@ -21,6 +22,14 @@ export const useDiaryStore = defineStore('diaryData', {
           this.userId = UserDataJson.id;
         }
         console.log(this.username, this.userId);
+      },
+      //로그아웃 시
+      clearAll() {
+        this.username = ""
+        this.userId = null
+        this.isLoggedIn = false
+        this.select_data = {}
+        this.content_data  = []
       },
       //php 주소..
       async getData(url, formData) {
@@ -94,5 +103,29 @@ export const useDiaryStore = defineStore('diaryData', {
           this.handleError(error, "Error during saving diary content");
         }
       },
+      // 사용자 다이어리 내용 조회
+      async loadDiarylist(){
+        this.checkSessionStorage()
+        try {
+          //formdata 형식으로 변환
+          const formData = new FormData();
+          console.log("check userId", this.userId);
+          formData.append("writerid", this.userId);
+          // formData.append("writerid", 5);
+  
+          const response = await this.getData("loadDiaryList.php", formData);
+          const result = response.data;
+          console.log(result);
+          if(result.success){
+            console.log(this.content_data);
+            this.content_data = result.data;
+          }
+          else{
+            console.log(result.message)
+          }
+        } catch (error) {
+          this.handleError(error, "Error during loading Diary list");
+        }
+      }
     }
   });
