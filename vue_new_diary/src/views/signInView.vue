@@ -1,8 +1,8 @@
 <template>
   <div class="text-center signIn-box">
     <section class="form-signin w-100 m-auto">
-      <h1 class="h3 mb-3 fw-normal">sign in</h1>
-      <!-- id -->
+      <h1 class="h3 mb-3 fw-normal">로그인</h1>
+      <!-- 아이디 -->
       <div class="form-floating">
         <input
           type="text"
@@ -10,10 +10,14 @@
           class="form-control"
           v-model="signInID"
           v-on:keyup.enter="keyEnter()"
+          @input="checkID"
         />
-        <label for="floatingInput">ID</label>
+        <label for="floatingInput">아이디</label>
       </div>
-      <!-- name : only signUp -->
+      <div v-if="!isIDValid && signUP" class="text-danger small">
+        아이디는 영문과 숫자로 설정할 수 있으며 5자이상으로 입력해주세요.
+      </div>
+      <!-- 이름 : 회원가입 시에만 표시 -->
       <div class="form-floating">
         <input
           v-show="signUP"
@@ -23,9 +27,9 @@
           v-model="signUpName"
           v-on:keyup.enter="keyEnter()"
         />
-        <label for="floatingName">name</label>
+        <label for="floatingName">이름</label>
       </div>
-      <!-- pw -->
+      <!-- 비밀번호 -->
       <div class="form-floating">
         <input
           type="password"
@@ -33,36 +37,43 @@
           id="floatingPassword"
           v-model="signInPW"
           v-on:keyup.enter="keyEnter()"
+          @input="checkPW"
         />
-        <label for="floatingPassword">Password</label>
+        <label for="floatingPassword">비밀번호</label>
+      </div>
+      <div v-if="!isPWValid && signUP" class="text-danger small">
+        비밀번호는 영문, 숫자, 특수문자를 포함해 8자 이상으로 작성해주세요.
       </div>
       <button
         v-show="!signUP"
         class="w-100 mb-2 btn btn-lg btn-signIn"
         @click="signIn()"
+        :disabled="!isIDValid || !isPWValid"
       >
-        Sign in
+        로그인
       </button>
       <label
         v-show="signUP"
         class="w-100 mb-2 btn btn-lg btn-signUp"
         @click="signUp()"
-        >Sign Up</label
+        :disabled="!isIDValid || !isPWValid"
+        >회원가입</label
       >
       <span
         v-show="!signUP"
         class="h6 fw-light text-decoration-underline"
         role="button"
         @click="signUP = true"
-        >sign Up</span
+        >회원가입</span
       >
     </section>
   </div>
 </template>
-  
-  <script>
-import { mapState, mapActions } from "pinia"; //store사용 준비, state/actions를 사용.
+
+<script>
+import { mapState, mapActions } from "pinia";
 import { useDiaryStore } from "../stores/store.js";
+
 export default {
   name: "signIn-view",
   data() {
@@ -71,15 +82,28 @@ export default {
       signInPW: "",
       signUpName: "",
       signUP: false,
+      isIDValid: true,
+      isPWValid: true,
     };
   },
   computed: {
-    ...mapState(useDiaryStore, ["isLoggedIn"]), //mapState => store의 state 사용
+    ...mapState(useDiaryStore, ["isLoggedIn"]),
   },
   methods: {
-    ...mapActions(useDiaryStore, ["signInDiary", "signUpDiary"]), //store의 actions 사용 (로그인/회원가입)
+    ...mapActions(useDiaryStore, ["signInDiary", "signUpDiary"]),
     keyEnter() {
-      this.signUP == true ? this.signUp() : this.signIn();
+      this.signUP === true ? this.signUp() : this.signIn();
+    },
+    //아이디 확인(5자 이상, 영문)
+    checkID() {
+      this.isIDValid = /^[a-zA-Z\d]{5,}$/.test(this.signInID);
+    },
+    //비밀번호 확인(영문/숫자/특수문자 포함 8자 이상)
+    checkPW() {
+      this.isPWValid =
+        /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+          this.signInPW
+        );
     },
     // 로그인
     async signIn() {
@@ -191,6 +215,10 @@ export default {
         }
       }
     },
+  },
+  watch: {
+    signInID: "checkID",
+    signInPW: "checkPW",
   },
 };
 </script>

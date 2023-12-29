@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import dayjs from "dayjs"; // 날짜 형식 변경을 위해..
 export const useDiaryStore = defineStore('diaryData', {
     state: () => ({
       username: "", //로그인 아이디
@@ -117,6 +118,17 @@ export const useDiaryStore = defineStore('diaryData', {
           const result = response.data;
           console.log(result);
           if(result.success){
+            result.data.map((item) => {
+              item.writetime = item.writetime
+                ? dayjs(item.writetime).format("YYYY-MM-DD")
+                : null;
+              item.createtime = item.createtime
+                ? dayjs(item.createtime).format("YYYY-MM-DD HH:mm:ss")
+                : null;
+              item.updatetime = item.updatetime
+                ? dayjs(item.updatetime).format("YYYY-MM-DD HH:mm:ss")
+                : null;
+            });
             console.log(this.content_data);
             this.content_data = result.data;
           }
@@ -126,6 +138,25 @@ export const useDiaryStore = defineStore('diaryData', {
         } catch (error) {
           this.handleError(error, "Error during loading Diary list");
         }
-      }
+      },
+      //다이어리 콘텐츠 삭제
+      async deleteDiaryContent(id){
+        //formdata 형식으로 변환
+        console.log("삭제할 아이디",id)
+        const formData = new FormData();
+        formData.append("id", id);
+  
+        try {
+          const response = await this.getData("deleteDiaryContent.php", formData);
+          const result = response.data;
+          return result;
+        } catch (error) {
+          this.handleError(error, "Error during delete diary content");
+        }
+      },
+      //select_data 값 세팅
+      setSelect_data(item){
+        this.select_data = item;
+      },
     }
   });

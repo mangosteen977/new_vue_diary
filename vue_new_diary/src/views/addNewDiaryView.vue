@@ -109,8 +109,10 @@ export default {
             } else {
               alert("데이터가 성공적으로 수정되었습니다.");
             }
-            // 리스트로 이동 혹은 해당 id의 내용 보여주기 뷰로 이동
-            // contentid = result.content_id
+            // 리스트로 이동
+            this.$router.push({
+              name: "diary-list-view",
+            });
           } else {
             // 데이터 저장 실패
             alert("데이터 저장에 실패했습니다. 다시 시도해 주세요.");

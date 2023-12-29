@@ -3,7 +3,7 @@
     <!-- 해당 아이디의 다이어리 리스트 있음(content_data) -->
     <div v-if="content_data && content_data.length > 0">
       <button @click="getdata()" class="btn btn-sm col-1 btn-profile">
-        Refresh
+        새로고침
       </button>
       <div
         v-for="item in content_data"
@@ -17,6 +17,12 @@
             <label class="">{{ item.writetime }}</label>
             <label class="">{{ item.title }}</label>
           </div>
+          <button @click="edit_Data(item)" class="btn btn-sm col-1 btn-edit">
+            수정
+          </button>
+          <button @click="del_data(item.id)" class="btn btn-sm col-1 btn-edit">
+            삭제
+          </button>
         </div>
         <div class="diary-list-content">
           <label class="">{{ item.content }}</label>
@@ -24,7 +30,7 @@
       </div>
     </div>
     <!-- 해당 아이디의 다이어리 리스트 없음(content_data) -->
-    <div v-else class="diary-list-title center">
+    <div v-else class="diary-list-title">
       <p>작성 된 다이어리가 없네요.</p>
     </div>
   </div>
@@ -47,20 +53,63 @@ export default {
     this.loadDiarylist();
   },
   methods: {
-    ...mapActions(useDiaryStore, ["loadDiarylist"]),
+    ...mapActions(useDiaryStore, [
+      "loadDiarylist",
+      "deleteDiaryContent",
+      "setSelect_data",
+    ]),
     getdata() {
       this.loadDiarylist();
       console.log(this.content_data);
     },
-    //   edit_Data(item) {
-    //     this.editData(item);
-    //     this.$router.push({
-    //       // editView로 이동..
-    //       // name : 'edit-view'
-    //       name: "diary-view",
-    //       // path : '/edit'
-    //     });
-    //   },
+    edit_Data(item) {
+      this.setSelect_data(item);
+      console.log(this.select_data);
+      this.$router.push({
+        name: "add-new-diary-view",
+      });
+    },
+    async del_data(itemID) {
+      if (confirm("삭제할까요?")) {
+        try {
+          console.log("삭제 아이디", itemID);
+          let result = await this.deleteDiaryContent(itemID);
+          if (result) {
+            if (result.success) {
+              // 삭제 성공
+              alert("삭제되었습니다.");
+              //다이어리 리스트 재로드
+              this.loadDiarylist();
+            } else {
+              // 삭제 실패
+              if (result.message === "DiaryContentNotFound") {
+                // 해당 id의 콘텐츠가 존재하지 않음.
+                alert("삭제에 실패했습니다. 다시 시도해 주세요.");
+                console.log("Not Found Diary Content Id :" + result.message);
+              } else {
+                alert("삭제에 실패했습니다. 다시 시도해 주세요.");
+                console.log("delete failure :" + result.error);
+                console.log(typeof result);
+                console.log(result);
+              }
+            }
+          }
+        } catch (error) {
+          if (
+            typeof error === "object" &&
+            error.error === "databaseConnectionFailed"
+          ) {
+            // 데이터베이스 연결 실패
+            console.error("데이터베이스 연결 실패 : ", error);
+            alert("삭제 중 오류가 발생했습니다. 다시 시도해 주세요.");
+          } else {
+            // 그 외 오류 발생
+            console.error("삭제 중 오류 발생 : ", error);
+            alert("삭제 중 오류가 발생했습니다. 다시 시도해 주세요.");
+          }
+        }
+      }
+    },
   },
 };
 </script>
