@@ -7,7 +7,7 @@ export const useDiaryStore = defineStore('diaryData', {
       userId: null,//로그인 된 아이디 ID
       isLoggedIn: false, //로그인 유무
       select_data: {}, //다이어리 작성 페이지
-      content_data : [] //다이어리 콘텐츠 리스트
+      content_data : [], //다이어리 콘텐츠 리스트
     }),
     actions: {
       //세선스토리지 로그인 정보 저장 유무 확인
@@ -104,6 +104,15 @@ export const useDiaryStore = defineStore('diaryData', {
           this.handleError(error, "Error during saving diary content");
         }
       },
+      //writetime 포맷 조정
+      settingDayFormat(data){
+        data.map((item) => {
+          item.writetime = item.writetime
+            ? dayjs(item.writetime).format("YYYY-MM-DD")
+            : null;
+        });
+        return data
+      },
       // 사용자 다이어리 내용 조회
       async loadDiarylist(){
         this.checkSessionStorage()
@@ -116,21 +125,33 @@ export const useDiaryStore = defineStore('diaryData', {
   
           const response = await this.getData("loadDiaryList.php", formData);
           const result = response.data;
-          console.log(result);
+          // console.log(result);
           if(result.success){
-            result.data.map((item) => {
-              item.writetime = item.writetime
-                ? dayjs(item.writetime).format("YYYY-MM-DD")
-                : null;
-              item.createtime = item.createtime
-                ? dayjs(item.createtime).format("YYYY-MM-DD HH:mm:ss")
-                : null;
-              item.updatetime = item.updatetime
-                ? dayjs(item.updatetime).format("YYYY-MM-DD HH:mm:ss")
-                : null;
-            });
-            console.log(this.content_data);
-            this.content_data = result.data;
+            let contents = this.settingDayFormat(result.data);
+            this.content_data = contents;
+            // console.log("확인",this.content_data);
+          }
+          else{
+            console.log(result.message)
+          }
+        } catch (error) {
+          this.handleError(error, "Error during loading Diary list");
+        }
+      },
+      // 일기 id로 내용 조회
+      async loadDiarylistByContentID(id){
+        try {
+          //formdata 형식으로 변환
+          const formData = new FormData();
+          formData.append("id", id);
+  
+          const response = await this.getData("loadDiarylistByContentID.php", formData);
+          const result = response.data;
+          // console.log(result);
+          if(result.success){
+            let contents = this.settingDayFormat(result.data);
+            this.select_data = contents[0];
+            // console.log(this.select_data);
           }
           else{
             console.log(result.message)

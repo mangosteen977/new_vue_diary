@@ -8,9 +8,9 @@
       <div
         v-for="item in content_data"
         :key="item.id"
+        @dblclick="edit_Data(item)"
         class="rounded diary-list-box"
       >
-        <!-- @dblclick="edit_Data(item)" -->
         <div class="diary-list-title">
           <label class="">{{ emotions_arr[item.emotion] }}</label>
           <div class="diary-list-top">

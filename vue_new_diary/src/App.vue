@@ -4,7 +4,7 @@
       <!-- navigation part -->
       <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-          <a class="navbar-brand" href="/calendar">다이어리</a>
+          <a class="navbar-brand" href="/calendarView">다이어리</a>
           <button
             class="navbar-toggler"
             type="button"
@@ -18,11 +18,14 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <!-- <li class="nav-item">
-                <router-link class="nav-link" aria-current="page" to="/calendar"
+              <li class="nav-item">
+                <router-link
+                  class="nav-link"
+                  aria-current="page"
+                  to="/calendarView"
                   >Home</router-link
                 >
-              </li> -->
+              </li>
               <li class="nav-item">
                 <router-link class="nav-link" to="/diaryListView"
                   >List</router-link

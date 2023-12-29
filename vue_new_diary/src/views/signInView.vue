@@ -143,7 +143,7 @@ export default {
           this.isLoggedIn = true;
           // 로그인 성공 시 리스트 페이지로 이동
           this.$router.push({
-            name: "diary-list-view",
+            name: "calendar-view",
           });
           // location.href = "/";
         } else {
