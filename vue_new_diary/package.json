@@ -2,10 +2,9 @@
   "name": "vue_new_diary",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://mangosteen977.github.io/vue_new_diary/",
   "scripts": {
     "serve": "vue-cli-service serve --host 0.0.0.0 --port 3000",
-    "build": "vue-cli-service build --dest docs",
+    "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

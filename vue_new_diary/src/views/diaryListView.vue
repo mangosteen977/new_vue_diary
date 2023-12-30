@@ -116,7 +116,8 @@ export default {
     
   <style>
 .list_box {
-  width: 600px;
+  /*width: 600px;*/
+  max-width: 600px;
   height: auto;
   margin: 0 auto;
   margin-top: 50px;

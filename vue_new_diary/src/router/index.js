@@ -5,7 +5,7 @@ import diaryListView from '../views/diaryListView.vue'
 import calendarView from '../views/calendarView.vue'
 const routes = [
     {
-        path : '/',
+        path : '',
         name : 'signIn-view',
         component : signInView
     },

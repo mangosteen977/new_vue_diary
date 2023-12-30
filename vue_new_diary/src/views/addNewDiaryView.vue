@@ -77,7 +77,7 @@ export default {
   },
   mounted() {},
   methods: {
-    ...mapActions(useDiaryStore, ["saveDiaryContent"]),
+    ...mapActions(useDiaryStore, ["saveDiaryContent", "setSelect_data"]),
     async diary_save() {
       if (!this.select_data.title) {
         alert("제목을 입력하세요.");
@@ -109,6 +109,7 @@ export default {
             } else {
               alert("데이터가 성공적으로 수정되었습니다.");
             }
+            this.setSelect_data({});
             // 리스트로 이동
             this.$router.push({
               name: "diary-list-view",

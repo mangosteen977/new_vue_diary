@@ -4,7 +4,7 @@
       <!-- navigation part -->
       <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-          <a class="navbar-brand" href="/calendarView">다이어리</a>
+          <a class="navbar-brand" to="/calendarView">다이어리</a>
           <button
             class="navbar-toggler"
             type="button"
@@ -85,7 +85,10 @@ export default {
       // 로그아웃 상태로 설정
       this.clearAll();
       // 로그인 페이지로 새로고침
-      location.href = "/";
+      // location.href = "/";
+      this.$router.push({
+        name: "signIn-view", //로그인 페이지로
+      });
     },
   },
 };
