@@ -4,5 +4,5 @@ import router from './router'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 
-createApp(App).use(router).use(createPinia()).mount('#app')
+createApp(App).use(createPinia()).use(router).mount('#app')
 import 'bootstrap/dist/js/bootstrap.js'
