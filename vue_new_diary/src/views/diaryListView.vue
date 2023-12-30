@@ -173,4 +173,17 @@ export default {
   font-size: 1.2em;
   margin-right: 10px;
 }
+.btn-profile {
+  width: auto;
+  border: 1px solid rgb(192, 106, 192);
+  border-radius: 3px;
+  margin-right: 3px;
+  margin-bottom: 10px;
+  color: rgb(192, 106, 192);
+  /* background-color: violet; */
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: rgb(192, 106, 192);
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: violet;
+}
 </style>
