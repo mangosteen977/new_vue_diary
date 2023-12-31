@@ -2,9 +2,9 @@
   <div class="list_box">
     <!-- 해당 아이디의 다이어리 리스트 있음(content_data) -->
     <div v-if="content_data && content_data.length > 0">
-      <button @click="getdata()" class="btn btn-sm col-1 btn-profile">
+      <!-- <button @click="getdata()" class="btn btn-sm col-1 btn-profile">
         새로고침
-      </button>
+      </button> -->
       <div
         v-for="item in content_data"
         :key="item.id"
@@ -17,15 +17,17 @@
             <label class="">{{ item.writetime }}</label>
             <label class="">{{ item.title }}</label>
           </div>
+        </div>
+        <div class="diary-list-content">
+          <label class="">{{ item.content }}</label>
+        </div>
+        <div class="diary-list-bottom">
           <button @click="edit_Data(item)" class="btn btn-sm col-1 btn-edit">
             수정
           </button>
           <button @click="del_data(item.id)" class="btn btn-sm col-1 btn-edit">
             삭제
           </button>
-        </div>
-        <div class="diary-list-content">
-          <label class="">{{ item.content }}</label>
         </div>
       </div>
     </div>
@@ -58,13 +60,13 @@ export default {
       "deleteDiaryContent",
       "setSelect_data",
     ]),
-    getdata() {
-      this.loadDiarylist();
-      console.log(this.content_data);
-    },
+    // getdata() {
+    //   this.loadDiarylist();
+    //   // console.log(this.content_data);
+    // },
     edit_Data(item) {
       this.setSelect_data(item);
-      console.log(this.select_data);
+      // console.log(this.select_data);
       this.$router.push({
         name: "add-new-diary-view",
       });
@@ -173,6 +175,12 @@ export default {
   line-height: 30px;
   font-size: 1.2em;
   margin-right: 10px;
+}
+.diary-list-bottom {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: flex-end;
 }
 .btn-profile {
   width: auto;

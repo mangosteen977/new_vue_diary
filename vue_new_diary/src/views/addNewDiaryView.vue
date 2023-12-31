@@ -1,9 +1,9 @@
 <template>
   <div class="mb-3 container-lg bg-opacity-25 rounded diary-edit-box">
     <div class="row row-flex-right">
-      <!-- <button @click="go_list()" class="btn btn-sm col-1 btn-edit">
+      <button @click="go_list()" class="btn btn-sm col-1 btn-edit">
         일기 목록
-      </button> -->
+      </button>
       <button @click="diary_save()" class="btn btn-sm col-1 btn-edit">
         일기 저장
       </button>
@@ -109,6 +109,7 @@ export default {
             } else {
               alert("데이터가 성공적으로 수정되었습니다.");
             }
+            // 선택 된 수정 데이터 리셋
             this.setSelect_data({});
             // 리스트로 이동
             this.$router.push({
@@ -123,6 +124,14 @@ export default {
         console.error("데이터 저장 중 오류 발생:", error);
         alert("데이터 저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
       }
+    },
+    go_list() {
+      // 선택 된 수정 데이터 리셋
+      this.setSelect_data({});
+      // 리스트로 이동
+      this.$router.push({
+        name: "diary-list-view",
+      });
     },
   },
 };

@@ -242,7 +242,8 @@ body {
   font-size: 12px;
 }
 .diary_monthly {
-  width: 900px;
+  max-width: 900px;
+  width: 80%;
   height: auto;
   margin: 0 auto;
   margin-top: 50px;
@@ -251,7 +252,8 @@ body {
   justify-content: center;
 }
 .year_month {
-  width: 700px;
+  max-width: 700px;
+  width: 98%;
   height: auto;
   display: flex;
   flex-wrap: nowrap;
@@ -259,7 +261,8 @@ body {
   align-items: center;
 }
 .year_month > div {
-  width: 300px;
+  max-width: 300px;
+  width: 45%;
   height: 50px;
   display: flex;
   align-items: center;
@@ -269,6 +272,12 @@ body {
   width: auto;
   height: auto;
   font-size: 30px;
+}
+@media (max-width: 400px) {
+  .this_year {
+    font-size: 15px;
+    font-weight: bold;
+  }
 }
 .btn_year {
   width: 15px;
@@ -282,7 +291,8 @@ body {
   display: block;
 }
 .year_month > ul {
-  width: 300px;
+  max-width: 300px;
+  width: 50%;
   height: 50px;
   list-style: none;
   display: flex;
@@ -293,6 +303,12 @@ body {
   font-size: 9px;
   margin: 0;
   padding: 0;
+  font-size: 7px;
+}
+@media (max-width: 400px) {
+  .year_month > ul {
+    flex-wrap: wrap;
+  }
 }
 .year_month > ul > li {
   width: 20px;
@@ -300,6 +316,13 @@ body {
   line-height: 20px;
   text-align: center;
   cursor: pointer;
+}
+@media (max-width: 400px) {
+  .year_month > ul > li {
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+  }
 }
 .thisMonth {
   font-weight: bold;
@@ -318,14 +341,16 @@ body {
       border: 1px solid rgb(13, 0, 255); */
 }
 .dayDate > div {
-  width: 700px;
+  max-width: 700px;
+  width: 98%;
   height: auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
 }
 .dayDate > div > label {
-  width: 90px;
+  max-width: 90px;
+  width: 14%;
   height: 40px;
   padding: 5px;
   font-size: 0.8em;
@@ -351,8 +376,10 @@ body {
       border-bottom: 1vh solid #db7093a3;
       display: block;
     */
-  width: 40px;
-  height: 20px;
+  width: auto;
+  max-width: 20px;
+  height: auto;
+  max-height: 25px;
   overflow: hidden;
   position: absolute;
   top: 0;

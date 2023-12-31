@@ -4,7 +4,7 @@
       <!-- navigation part -->
       <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-          <a class="navbar-brand" to="/calendarView">다이어리</a>
+          <a class="navbar-brand" href="/vue_new_diary">다이어리</a>
           <button
             class="navbar-toggler"
             type="button"
@@ -69,10 +69,17 @@ export default {
     ...mapState(useDiaryStore, ["isLoggedIn"]),
   },
   created() {
-    this.checkSessionStorage();
+    this.checkLogin();
   },
   methods: {
     ...mapActions(useDiaryStore, ["checkSessionStorage", "clearAll"]), //store의 actions 사용 (로그인/회원가입)
+    async checkLogin() {
+      //로그인 여부에 따라서 라우터 이동
+      await this.checkSessionStorage();
+      this.$router.push({
+        name: this.isLoggedIn ? "calendar-view" : "signIn-view",
+      });
+    },
     goToLoginView() {
       this.$router.push({
         name: "signIn-view", //로그인 페이지로
