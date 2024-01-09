@@ -86,14 +86,16 @@ export const useDiaryStore = defineStore('diaryData', {
       async saveDiaryContent(data) {
         // formdata 형식으로 변환
         const formData = new FormData();
-        let checkI = data.id === undefined ? true : false;
+        let checkI = data.id === undefined ? false : true;
         console.log(data.id, checkI, this.username, this.userId);
         formData.append("writerid", this.userId);
         formData.append("title", data.title);
         formData.append("content", data.content);
         formData.append("emotion", data.emotion);
         formData.append("creator", this.username);
-        if(data.id != undefined){
+        formData.append("writetime", data.writetime);
+        console.log("writetime",data.writetime)
+        if(checkI){
           formData.append("id", data.id); // id있을 경우 수정, 없으면 신규 저장
           formData.append("updater", this.username);
         }
@@ -130,10 +132,11 @@ export const useDiaryStore = defineStore('diaryData', {
           if(result.success){
             let contents = this.settingDayFormat(result.data);
             this.content_data = contents;
-            // console.log("확인",this.content_data);
+            console.log("다이어리 내용 확인",this.content_data);
           }
           else{
             console.log(result.message)
+            console.log(result)
           }
         } catch (error) {
           this.handleError(error, "Error during loading Diary list");
@@ -152,7 +155,7 @@ export const useDiaryStore = defineStore('diaryData', {
           if(result.success){
             let contents = this.settingDayFormat(result.data);
             this.select_data = contents[0];
-            // console.log(this.select_data);
+            console.log("개별 다이어리 내용 확인",this.select_data);
           }
           else{
             console.log(result.message)

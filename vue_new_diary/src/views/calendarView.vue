@@ -165,16 +165,20 @@ export default {
       document.getElementById("mon" + this.month).className = "thisMonth"; // 해당 월 표시 classname 추가
       this.today_date = today.getDate();
       this.today_day = this.days[today.getDay()];
-      //   console.log(
-      //     today,
-      //     this.year,
-      //     this.month,
-      //     this.today_date,
-      //     this.today_day
-      //   );
+      // console.log(
+      //   // today,
+      //   this.year,
+      //   this.month,
+      //   this.today_date,
+      //   this.today_day
+      // );
       // store에 DB 가져온 뒤 캘린더 배열 만드는 함수 호출
       this.loadDiarylist().then(() => {
         // console.log("mounted__loadDiarylist", this.content_data);
+        let selectDay = {
+          writetime: dayjs(String(today)).format("YYYY-MM-DD"),
+        };
+        this.setSelect_data(selectDay); //오늘 날짜로 설정
         this.getCalendars();
       });
     },

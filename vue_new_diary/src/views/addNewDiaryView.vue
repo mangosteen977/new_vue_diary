@@ -91,15 +91,16 @@ export default {
         alert("감정을 선택하세요.");
         return;
       }
-
+      console.log("this.select_data.writetime", this.select_data.writetime);
       try {
         let result = await this.saveDiaryContent({
           title: this.select_data.title,
           content: this.select_data.content,
           emotion: this.select_data.emotion,
           id: this.select_data.id,
+          writetime: this.select_data.writetime,
         });
-
+        console.log("result", result);
         if (result) {
           console.log(result);
           if (result.success) {

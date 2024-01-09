@@ -5,6 +5,12 @@
       <!-- <button @click="getdata()" class="btn btn-sm col-1 btn-profile">
         새로고침
       </button> -->
+      <button @click="sortAtoB()" class="btn btn-sm col-1 btn-profile">
+        내림차순
+      </button>
+      <button @click="sortBtoA()" class="btn btn-sm col-1 btn-profile">
+        오름차순
+      </button>
       <div
         v-for="item in content_data"
         :key="item.id"
@@ -46,6 +52,7 @@ export default {
   data() {
     return {
       emotions_arr: ["😎", "🥰", "😶", "😭", "😡"],
+      original_contentData: [],
     };
   },
   computed: {
@@ -64,6 +71,16 @@ export default {
     //   this.loadDiarylist();
     //   // console.log(this.content_data);
     // },
+    sortAtoB() {
+      this.content_data.sort(
+        (a, b) => new Date(b.writetime) - new Date(a.writetime)
+      );
+    },
+    sortBtoA() {
+      this.content_data.sort(
+        (a, b) => new Date(a.writetime) - new Date(b.writetime)
+      );
+    },
     edit_Data(item) {
       this.setSelect_data(item);
       // console.log(this.select_data);
