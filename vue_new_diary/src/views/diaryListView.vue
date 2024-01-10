@@ -1,18 +1,18 @@
 <template>
   <div class="list_box">
     <!-- 해당 아이디의 다이어리 리스트 있음(content_data) -->
-    <div v-if="content_data && content_data.length > 0">
-      <!-- <button @click="getdata()" class="btn btn-sm col-1 btn-profile">
-        새로고침
-      </button> -->
+    <div v-if="visibleData && visibleData.length > 0">
       <button @click="sortAtoB()" class="btn btn-sm col-1 btn-profile">
         내림차순
       </button>
       <button @click="sortBtoA()" class="btn btn-sm col-1 btn-profile">
         오름차순
       </button>
+      <button @click="togglePerPage" class="btn btn-sm col-1 btn-profile">
+        {{ showAll ? "5개씩 보기" : "전체 보기" }}
+      </button>
       <div
-        v-for="item in content_data"
+        v-for="item in visibleData"
         :key="item.id"
         @dblclick="edit_Data(item)"
         class="rounded diary-list-box"
@@ -37,9 +37,20 @@
         </div>
       </div>
     </div>
-    <!-- 해당 아이디의 다이어리 리스트 없음(content_data) -->
+    <!-- 해당 아이디의 다이어리 리스트 없음(visibleData) -->
     <div v-else class="diary-list-title">
       <p>작성 된 다이어리가 없네요.</p>
+    </div>
+    <!-- 페이징 버튼 -->
+    <div class="paging" v-if="!showAll">
+      <button
+        @click="changePage(page)"
+        v-for="page in totalPages"
+        :key="page"
+        :class="{ active: currentPage === page }"
+      >
+        {{ page }}
+      </button>
     </div>
   </div>
 </template>
@@ -52,11 +63,30 @@ export default {
   data() {
     return {
       emotions_arr: ["😎", "🥰", "😶", "😭", "😡"],
-      original_contentData: [],
+      perPage: 5, //페이징 갯수
+      currentPage: 1,
+      showAll: true, // 전체보기
     };
   },
   computed: {
     ...mapState(useDiaryStore, ["content_data"]),
+    // 전체보기 or 5개씩 보기 (기본 전체보기)
+    visibleData() {
+      if (this.showAll) {
+        return this.content_data;
+      } else {
+        const start = (this.currentPage - 1) * this.perPage;
+        const end = start + this.perPage;
+        return this.content_data.slice(start, end);
+      }
+    },
+    // 전체 페이지 수 계산
+    totalPages() {
+      if (this.showAll) {
+        return 1; // 전체를 보여주는 경우는 1페이지
+      }
+      return Math.ceil(this.content_data.length / this.perPage);
+    },
   },
   created() {
     this.loadDiarylist();
@@ -80,6 +110,15 @@ export default {
       this.content_data.sort(
         (a, b) => new Date(a.writetime) - new Date(b.writetime)
       );
+    },
+    // 5개씩 보기 <=> 전체 보기 토글
+    togglePerPage() {
+      this.showAll = !this.showAll;
+      this.currentPage = 1;
+    },
+    // 페이지 변경
+    changePage(page) {
+      this.currentPage = page;
     },
     edit_Data(item) {
       this.setSelect_data(item);
@@ -211,5 +250,22 @@ export default {
   --bs-btn-hover-bg: rgb(192, 106, 192);
   --bs-btn-active-color: #fff;
   --bs-btn-active-bg: violet;
+}
+.paging {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.paging > button {
+  border: none;
+  margin-right: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.paging > button.active {
+  background-color: #edb6e7b3;
+  color: #fff;
 }
 </style>
